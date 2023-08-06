@@ -1,0 +1,6 @@
+# user-specific files
+user_config.yaml
+message_config.yaml
+
+# Visual Studio Code settings folder
+.vscode
