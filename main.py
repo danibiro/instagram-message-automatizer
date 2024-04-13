@@ -3,12 +3,26 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 import yaml
 import logging as log
 
-log.basicConfig(level=log.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+log.basicConfig(
+    filename="log.txt",
+    filemode="a",
+    level=log.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s: %(message)s',
+    datefmt="%Y-%m-%d %H:%M:%S"
+)
 
 MAX_TIMEOUT = 7
+
+def driver_init():
+    options = webdriver.ChromeOptions()
+    # options.add_argument("--headless=new")
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    return driver
 
 def read_files():
     with open("user_config.yaml", "r") as user_stream, open("message_config.yaml", "r") as message_stream:
@@ -83,10 +97,10 @@ def send_message(driver, message_config):
 
     driver.find_element(By.XPATH, "//div[@role='button' and text()='Send']").click()
 
-    log.info("Message \"" + message_config["message"] + "\" sent successfully to user " + message_config["username"])
+    log.info("Message \"" + message_config["message"] + "\" sent successfully to user " + message_config["username"] + "\n\n")
 
 if __name__ == "__main__":
-    driver = webdriver.Chrome()
+    driver = driver_init()
     user_config, message_config = read_files()
     init(driver)
     accept_cookies(driver)

@@ -4,3 +4,6 @@ message_config.yaml
 
 # Visual Studio Code settings folder
 .vscode
+
+# log file
+log.txt
